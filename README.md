@@ -1,5 +1,4 @@
-
-#Graceful Shutdown for SignalR in .NET 8 API and Docker
+# Graceful Shutdown for SignalR in .NET 8 API and Docker
 
 Graceful Shutdown Handling
 In this example, the method lifetime.ApplicationStopping.Register() is used to register a cleanup action that will be triggered when the application is shutting down. You can simulate tasks like:
