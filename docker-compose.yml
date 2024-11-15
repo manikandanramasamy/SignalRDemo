@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  webapi:
+    image: graceful-shutdown-example:latest  # The .NET Web API image name
+    build:
+      context: .  # The path to your solution or project folder
+      dockerfile: ./Api/Dockerfile  # The path to your Dockerfile
+    ports:
+      - "5000:8080"  # Expose port 5000 on the host and map it to port 80 in the container
+    depends_on:
+      - db  # Make sure the database is ready before starting the web API
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development  # Set environment variables (e.g., dev environment)
+      - ConnectionStrings__DefaultConnection=Server=db;Database=exampledb;User Id=sa;Password=YourStrong!Passw0rd;
+
+  db:
+    image: mcr.microsoft.com/mssql/server:2022-latest  # SQL Server image
+    container_name: db
+    environment:
+      - SA_PASSWORD=YourStrong!Passw0rd  # SQL Server SA password
+      - ACCEPT_EULA=Y  # Accept SQL Server EULA
+    ports:
+      - "1433:1433"  # Expose port 1433 for SQL Server
+    volumes:
+      - sql_data:/var/opt/mssql  # Persist database data using Docker volumes
+
+volumes:
+  sql_data:  # Define a named volume to persist database data
